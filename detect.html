@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="login-center-wrapper detect-bg-light">
+    <div class="login-center-box">
+
+        <h1 class="login-title">Leaf Disease Detection</h1>
+        <p class="login-subtitle">
+            Upload a crop leaf image for analysis
+        </p>
+
+        {% if error %}
+            <div class="flash-box error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Select Leaf Image</label>
+                <input type="file" name="leaf_image">
+            </div>
+            <button type="submit" class="btn btn-primary login-btn">
+                Analyze Image
+            </button>
+        </form>
+
+        {% if image_filename %}
+        <div class="result-preview">
+            <p class="result-title">Uploaded Image</p>
+            <img src="{{ url_for('uploaded_file', filename=image_filename) }}" class="detect-preview-img">
+        </div>
+        {% endif %}
+
+        {% if crop %}
+        <div class="result-box">
+
+            <p><strong>Crop:</strong> {{ crop }}</p>
+            <p><strong>Disease:</strong> {{ disease }}</p>
+            <p><strong>Confidence:</strong> {{ confidence }}%</p>
+
+            {% if status == "Healthy" %}
+                <p class="detect-result healthy">✔ Healthy Leaf</p>
+                <h4>Healthy Growth Conditions</h4>
+                <ul class="factors-list">
+                    <li>Proper irrigation</li>
+                    <li>Balanced nutrients</li>
+                    <li>Good sunlight</li>
+                    <li>Regular monitoring</li>
+                </ul>
+            {% else %}
+                <p class="detect-result diseased">❌ Diseased Leaf</p>
+                <h4>Factors Affecting This Disease</h4>
+                <ul class="factors-list">
+                    <li>High humidity</li>
+                    <li>Temperature stress</li>
+                    <li>Fungal or bacterial infection</li>
+                    <li>Poor soil condition</li>
+                    <li>Pest activity</li>
+                </ul>
+            {% endif %}
+
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="hero" style="background-image: url('{{ url_for('static', filename='img/bg-farm.jpg') }}');">
+    <div class="hero-overlay">
+        <div class="hero-content">
+            <h1>Intelligent Federated Crop Disease Decision Support</h1>
+            <p>
+                This system combines federated learning and data-driven analytics to help farmers and
+                researchers detect crop diseases from leaf images and estimate disease risk using
+                environmental conditions – all through a unified web interface.
+            </p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('login') }}" class="btn btn-primary">Login to Continue</a>
+                <a href="#modules" class="btn btn-ghost">Explore All Features</a>
+            </div>
+            <div class="hero-tags">
+                <span>Federated Learning</span>
+                <span>PlantVillage Leaf Images</span>
+                <span>Risk Prediction</span>
+                <span>MCA Final Year Project</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section">
+    <div class="section-header">
+        <h2>Sample Leaf Images from PlantVillage Dataset</h2>
+        <p>
+            The federated detection model is trained on real crop leaf images, including both healthy and
+            diseased samples across multiple crops.
+        </p>
+    </div>
+    <div class="gallery-grid">
+        <div class="gallery-card">
+            <img src="{{ url_for('static', filename='img/leaf-1.jpg') }}" alt="Leaf 1">
+            <div class="gallery-caption">
+                Tomato leaf with visible lesions – used for disease detection training.
+            </div>
+        </div>
+        <div class="gallery-card">
+            <img src="{{ url_for('static', filename='img/leaf-2.jpg') }}" alt="Leaf 2">
+            <div class="gallery-caption">
+                Apple or grape leaf affected by fungal infection, part of the training data.
+            </div>
+        </div>
+        <div class="gallery-card">
+            <img src="{{ url_for('static', filename='img/leaf-3.jpg') }}" alt="Leaf 3">
+            <div class="gallery-caption">
+                Healthy leaf sample used as a reference class during model training.
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MODULES SECTION -->
+<section class="modules-section" id="modules">
+    <div class="section-header">
+        <h2>System Modules & Features</h2>
+        <p>
+            The application is divided into three main modules, covering image-based detection,
+            environmental risk prediction, and interaction through a secure web interface.
+        </p>
+    </div>
+    <div class="modules-grid">
+        <div class="module-card">
+            <h3>Federated Leaf Disease Detection</h3>
+            <p>
+                Uses a convolutional neural network trained with Federated Learning on distributed
+                PlantVillage image subsets. Each client trains locally and only shares model updates.
+            </p>
+            <ul>
+                <li>Clients hold local color images of crop leaves.</li>
+                <li>Server aggregates client updates using FedAvg.</li>
+                <li>Exported global model is used for real-time detection.</li>
+            </ul>
+        </div>
+        <div class="module-card">
+            <h3>Disease Risk Prediction Engine</h3>
+            <p>
+                A classical machine learning model built on tabular data such as temperature, humidity,
+                rainfall, soil moisture, season, leaf wetness duration, and pest infestation levels.
+            </p>
+            <ul>
+                <li>Outputs probability of disease occurrence.</li>
+                <li>Maps probability to risk levels (Low → Critical).</li>
+                <li>Provides human-readable recommendations for farmers.</li>
+            </ul>
+        </div>
+        <div class="module-card">
+            <h3>User Interface & Access Control</h3>
+            <p>
+                A web-based front end where users can log in, upload leaf images, enter field parameters,
+                and view detection and prediction results in a structured way.
+            </p>
+            <ul>
+                <li>Login and future signup capability.</li>
+                <li>Separate workflows for detection and prediction.</li>
+                <li>Space reserved for history/logs and knowledge base.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- FEDERATED LEARNING EXPLANATION -->
+<section class="about-section" id="about_fl">
+    <div class="section-header">
+        <h2>How Federated Learning is Used in This Project</h2>
+        <p>
+            Instead of sending all crop images to a central server, federated learning trains a shared
+            model collaboratively across multiple clients while keeping raw data local.
+        </p>
+    </div>
+    <div class="about-content">
+        <div class="about-text">
+            <p>
+                In a realistic scenario, each farm, institution, or region may store its own crop leaf images.
+                Centralizing all of these images on a single server is expensive and raises privacy and
+                ownership concerns.
+            </p>
+            <p>
+                In this project, the PlantVillage dataset is partitioned into several simulated clients to
+                mimic different regions or stakeholders. The server sends an initial CNN model to each client.
+                Every client trains that model locally on its own PlantVillage subset and sends back only the
+                updated model parameters.
+            </p>
+            <p>
+                The server performs federated averaging (FedAvg) over all client updates to obtain a refined
+                global model. After several rounds, the global model reaches a stable accuracy. That final
+                model is exported and integrated into this web application for leaf disease detection.
+            </p>
+        </div>
+        <div class="about-badge">
+            <h3>One Federated Training Round</h3>
+            <ol>
+                <li>Server initializes the CNN and broadcasts it to all clients.</li>
+                <li>Each client trains the model on its local leaf image subset.</li>
+                <li>Clients send updated model weights back to the server.</li>
+                <li>Server aggregates updates (FedAvg) to build a new global model.</li>
+            </ol>
+            <p class="small-note">
+                Only model parameters are communicated. Raw plant images never leave the client devices,
+                which preserves data privacy while still benefiting from collaborative training.
+            </p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
